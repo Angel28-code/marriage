@@ -1,0 +1,142 @@
+---
+title: "Marriage and generation in the United States"
+execute:
+  echo: false
+---
+
+## What share of adults are married?
+
+This page uses the U.S. Census Bureau's 2023 American Community Survey (ACS)
+Public Use Microdata Sample (PUMS) to compare marital status across generations.
+The Census does not ask people which generation they belong to, so generation is
+estimated from age using Pew Research Center birth-year ranges. The estimates
+below represent adults ages 18 and older.
+
+To run this analysis, request a free [Census API key](https://api.census.gov/data/key_signup.html)
+and add it to your local R environment with
+`tidycensus::census_api_key("YOUR KEY", install = TRUE)`. Do not put your key in
+this project. Restart R before rendering the page.
+
+```{r}
+#| label: setup
+#| message: false
+
+library(tidyverse)
+library(tidycensus)
+```
+
+```{r}
+#| label: load-census-data
+#| cache: true
+
+us_adults <- get_pums(
+  variables = c("AGEP", "MAR", "PWGTP"),
+  state = "all",
+  year = 2023,
+  survey = "acs1",
+  variables_filter = list(AGEP = 18:99)
+)
+```
+
+`PWGTP` is the ACS person weight, used here to estimate the U.S. population
+represented by the sample. The cohort age ranges below use 2023 minus the
+published birth-year boundaries; age at interview can place a small number of
+people near a generation boundary in an adjacent cohort.
+
+```{r}
+#| label: summarize-by-generation
+
+generation_levels <- c(
+  "Gen Z", "Millennials", "Gen X", "Baby Boomers",
+  "Silent Generation", "Greatest Generation"
+)
+
+marital_status_labels <- c(
+  "1" = "Married",
+  "2" = "Widowed",
+  "3" = "Divorced",
+  "4" = "Separated",
+  "5" = "Never married"
+)
+
+marital_status_by_generation <- us_adults |>
+  mutate(
+    generation = case_when(
+      AGEP <= 26 ~ "Gen Z",
+      AGEP <= 42 ~ "Millennials",
+      AGEP <= 58 ~ "Gen X",
+      AGEP <= 77 ~ "Baby Boomers",
+      AGEP <= 95 ~ "Silent Generation",
+      TRUE ~ "Greatest Generation"
+    ),
+    generation = factor(generation, levels = generation_levels),
+    marital_status = recode(as.character(MAR), !!!marital_status_labels)
+  ) |>
+  filter(!is.na(marital_status)) |>
+  group_by(generation, marital_status) |>
+  summarise(weighted_people = sum(PWGTP), .groups = "drop") |>
+  group_by(generation) |>
+  mutate(percent = 100 * weighted_people / sum(weighted_people)) |>
+  ungroup()
+
+married_by_generation <- marital_status_by_generation |>
+  filter(marital_status == "Married")
+```
+
+```{r}
+#| label: plot-marriage-by-generation
+#| fig-cap: "Estimated share of U.S. adults who were married in 2023, by generation."
+
+ggplot(married_by_generation, aes(x = generation, y = percent)) +
+  geom_col(fill = "#3973ac") +
+  geom_text(
+    aes(label = scales::percent(percent / 100, accuracy = 1)),
+    vjust = -0.4
+  ) +
+  scale_y_continuous(
+    labels = scales::label_percent(scale = 1),
+    limits = c(0, 100),
+    expand = expansion(mult = c(0, 0.08))
+  ) +
+  labs(
+    x = NULL,
+    y = "Adults currently married",
+    caption = "Source: U.S. Census Bureau, 2023 ACS 1-year PUMS; weighted with PWGTP."
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 25, hjust = 1))
+```
+
+The table gives the estimated marital-status distribution for each generation.
+In the ACS, "married" is a marital-status response; "separated" is reported
+separately.
+
+```{r}
+#| label: marital-status-table
+
+marital_status_by_generation |>
+  select(generation, marital_status, percent) |>
+  pivot_wider(names_from = marital_status, values_from = percent) |>
+  select(generation, Married, Widowed, Divorced, Separated, `Never married`) |>
+  arrange(generation) |>
+  mutate(across(where(is.numeric), \(x) round(x, 1))) |>
+  knitr::kable(
+    col.names = c("Generation", "Married (%)", "Widowed (%)", "Divorced (%)",
+                  "Separated (%)", "Never married (%)"),
+    caption = "Estimated marital status of U.S. adults by generation, 2023."
+  )
+```
+
+## Data and definitions
+
+- **Census source:** [2023 ACS 1-year PUMS](https://www.census.gov/programs-surveys/acs/microdata.html).
+  PUMS contains anonymized person-level survey records; the person weight
+  (`PWGTP`) lets the sample estimate population totals and percentages.
+- **Generation boundaries:** Pew Research Center's [generation definitions](https://www.pewresearch.org/short-reads/2019/01/17/where-millennials-end-and-generation-z-begins/):
+  Gen Z begins in 1997; Millennials are 1981-1996; Gen X is 1965-1980;
+  Baby Boomers are 1946-1964; the Silent Generation is 1928-1945; and the
+  Greatest Generation was born before 1928.
+- **Coverage:** Only adults are included. Thus, the Gen Z estimate covers only
+  adults in that generation. Generation is not a Census variable; boundaries
+  and age-at-interview mean these groupings are approximate. These are weighted
+  point estimates and do not show sampling margins of error.
