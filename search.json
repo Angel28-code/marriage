@@ -1,0 +1,30 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Marriage and generation in the United States",
+    "section": "",
+    "text": "This page uses the U.S. Census Bureau’s 2023 American Community Survey (ACS) Public Use Microdata Sample (PUMS) to compare marital status across generations. The Census does not ask people which generation they belong to, so generation is estimated from age using Pew Research Center birth-year ranges. The estimates below represent adults ages 18 and older.\nTo run this analysis, request a free Census API key and add it to your local R environment with tidycensus::census_api_key(\"YOUR KEY\", install = TRUE). Do not put your key in this project. Restart R before rendering the page.\n\n\nGetting data from the 2023 1-year ACS Public Use Microdata Sample\n\n\nRequesting data for the entire United States by state then combining the result.\nThis can take several minutes to complete.\nFor large data extract workflows, consider downloading data from the Census FTP server\nor from IPUMS (https://ipums.org) instead.\n\n\nPWGTP is the ACS person weight, used here to estimate the U.S. population represented by the sample. The cohort age ranges below use 2023 minus the published birth-year boundaries; age at interview can place a small number of people near a generation boundary in an adjacent cohort.\n\n\n\n\n\nEstimated share of U.S. adults who were married in 2023, by generation.\n\n\n\n\nThe table gives the estimated marital-status distribution for each generation. In the ACS, “married” is a marital-status response; “separated” is reported separately.\n\n\n\nEstimated marital status of U.S. adults by generation, 2023.\n\n\n\n\n\n\n\n\n\n\nGeneration\nMarried (%)\nWidowed (%)\nDivorced (%)\nSeparated (%)\nNever married (%)\n\n\n\n\nGen Z\n10.2\n0.1\n0.6\n0.3\n88.8\n\n\nMillennials\n50.9\n0.4\n6.4\n1.9\n40.4\n\n\nGen X\n64.2\n2.0\n15.4\n2.6\n15.9\n\n\nBaby Boomers\n61.8\n10.2\n17.3\n1.7\n9.0\n\n\nSilent Generation\n44.1\n38.5\n11.9\n0.8\n4.7\n\n\nGreatest Generation\n16.1\n63.1\n17.9\nNA\n2.9"
+  },
+  {
+    "objectID": "index.html#what-share-of-adults-are-married",
+    "href": "index.html#what-share-of-adults-are-married",
+    "title": "Marriage and generation in the United States",
+    "section": "",
+    "text": "This page uses the U.S. Census Bureau’s 2023 American Community Survey (ACS) Public Use Microdata Sample (PUMS) to compare marital status across generations. The Census does not ask people which generation they belong to, so generation is estimated from age using Pew Research Center birth-year ranges. The estimates below represent adults ages 18 and older.\nTo run this analysis, request a free Census API key and add it to your local R environment with tidycensus::census_api_key(\"YOUR KEY\", install = TRUE). Do not put your key in this project. Restart R before rendering the page.\n\n\nGetting data from the 2023 1-year ACS Public Use Microdata Sample\n\n\nRequesting data for the entire United States by state then combining the result.\nThis can take several minutes to complete.\nFor large data extract workflows, consider downloading data from the Census FTP server\nor from IPUMS (https://ipums.org) instead.\n\n\nPWGTP is the ACS person weight, used here to estimate the U.S. population represented by the sample. The cohort age ranges below use 2023 minus the published birth-year boundaries; age at interview can place a small number of people near a generation boundary in an adjacent cohort.\n\n\n\n\n\nEstimated share of U.S. adults who were married in 2023, by generation.\n\n\n\n\nThe table gives the estimated marital-status distribution for each generation. In the ACS, “married” is a marital-status response; “separated” is reported separately.\n\n\n\nEstimated marital status of U.S. adults by generation, 2023.\n\n\n\n\n\n\n\n\n\n\nGeneration\nMarried (%)\nWidowed (%)\nDivorced (%)\nSeparated (%)\nNever married (%)\n\n\n\n\nGen Z\n10.2\n0.1\n0.6\n0.3\n88.8\n\n\nMillennials\n50.9\n0.4\n6.4\n1.9\n40.4\n\n\nGen X\n64.2\n2.0\n15.4\n2.6\n15.9\n\n\nBaby Boomers\n61.8\n10.2\n17.3\n1.7\n9.0\n\n\nSilent Generation\n44.1\n38.5\n11.9\n0.8\n4.7\n\n\nGreatest Generation\n16.1\n63.1\n17.9\nNA\n2.9"
+  },
+  {
+    "objectID": "index.html#data-and-definitions",
+    "href": "index.html#data-and-definitions",
+    "title": "Marriage and generation in the United States",
+    "section": "Data and definitions",
+    "text": "Data and definitions\n\nCensus source: 2023 ACS 1-year PUMS. PUMS contains anonymized person-level survey records; the person weight (PWGTP) lets the sample estimate population totals and percentages.\nGeneration boundaries: Pew Research Center’s generation definitions: Gen Z begins in 1997; Millennials are 1981-1996; Gen X is 1965-1980; Baby Boomers are 1946-1964; the Silent Generation is 1928-1945; and the Greatest Generation was born before 1928.\nCoverage: Only adults are included. Thus, the Gen Z estimate covers only adults in that generation. Generation is not a Census variable; boundaries and age-at-interview mean these groupings are approximate. These are weighted point estimates and do not show sampling margins of error."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  }
+]
